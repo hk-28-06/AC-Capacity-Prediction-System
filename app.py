@@ -162,15 +162,15 @@ def render_gauge(value, vmin=0.5, vmax=4.0):
     cx, cy = 110, 110
     x = cx + r * math.cos(math.radians(180 - angle))
     y = cy - r * math.sin(math.radians(180 - angle))
-    svg = f"""
-    <svg width="220" height="130" viewBox="0 0 220 130">
-      <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="#1E293B" stroke-width="16" stroke-linecap="round"/>
-      <path d="M 20 110 A 90 90 0 0 1 {x:.1f} {y:.1f}" fill="none" stroke="{PRIMARY}" stroke-width="16" stroke-linecap="round"/>
-      <circle cx="{x:.1f}" cy="{y:.1f}" r="7" fill="{ACCENT}"/>
-      <text x="110" y="105" text-anchor="middle" font-size="26" font-weight="800" fill="#F1F5F9">{value:.2f}</text>
-      <text x="110" y="124" text-anchor="middle" font-size="11" fill="#94A3B8">TON</text>
-    </svg>
-    """
+    svg = (
+        f'<svg width="220" height="130" viewBox="0 0 220 130">'
+        f'<path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="#1E293B" stroke-width="16" stroke-linecap="round"/>'
+        f'<path d="M 20 110 A 90 90 0 0 1 {x:.1f} {y:.1f}" fill="none" stroke="{PRIMARY}" stroke-width="16" stroke-linecap="round"/>'
+        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="7" fill="{ACCENT}"/>'
+        f'<text x="110" y="105" text-anchor="middle" font-size="26" font-weight="800" fill="#F1F5F9">{value:.2f}</text>'
+        f'<text x="110" y="124" text-anchor="middle" font-size="11" fill="#94A3B8">TON</text>'
+        f'</svg>'
+    )
     return svg
 
 
@@ -317,13 +317,14 @@ with tab_predict:
 
     with col_result:
         st.subheader("Prediction")
-        st.markdown(f"""
-        <div class="result-card">
-            {render_gauge(prediction)}
-            <div class="ton-label">Predicted AC Capacity</div>
-            <div class="recommend-pill">Recommended: {recommended:.1f} Ton unit</div>
-        </div>
-        """, unsafe_allow_html=True)
+        card_html = (
+            '<div class="result-card">'
+            f'{render_gauge(prediction)}'
+            '<div class="ton-label">Predicted AC Capacity</div>'
+            f'<div class="recommend-pill">Recommended: {recommended:.1f} Ton unit</div>'
+            '</div>'
+        )
+        st.markdown(card_html, unsafe_allow_html=True)
 
         st.caption(
             f"Cross-check — Random Forest: **{rf_prediction:.2f} Ton** · "
